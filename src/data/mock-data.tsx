@@ -20,7 +20,7 @@ export const mockRecipes: Recipe[] = [
     ],
     instructions:
       "1. Cook pasta according to package directions\n2. In a bowl, whisk eggs with grated parmesan\n3. Cook pancetta until crispy\n4. Combine hot pasta with egg mixture\n5. Add pancetta and season with black pepper\n6. Serve immediately",
-    image: "/spaghetti-carbonara.png",
+    image: "",
     tags: [],
     sourceLink: "",
   },
@@ -43,7 +43,7 @@ export const mockRecipes: Recipe[] = [
     ],
     instructions:
       "1. Cook rice according to package directions\n2. Season and cook chicken breast until done\n3. Steam broccoli until tender\n4. Slice chicken and arrange over rice\n5. Add broccoli and drizzle with teriyaki sauce\n6. Garnish with sesame seeds and green onions",
-    image: "/chicken-teriyaki-bowl.png",
+    image: "",
     tags: [],
     sourceLink: "",
   },
@@ -68,7 +68,7 @@ export const mockRecipes: Recipe[] = [
     ],
     instructions:
       "1. Cook quinoa and let cool\n2. Dice cucumber, tomatoes, and red onion\n3. Combine quinoa with vegetables and olives\n4. Crumble feta cheese on top\n5. Whisk olive oil and lemon juice for dressing\n6. Toss salad with dressing and serve",
-    image: "/mediterranean-quinoa-salad.png",
+    image: "",
     tags: [],
     sourceLink: "",
   },
@@ -93,7 +93,7 @@ export const mockRecipes: Recipe[] = [
     ],
     instructions:
       "1. Brown ground beef with taco seasoning\n2. Warm taco shells in oven\n3. Shred lettuce and dice tomatoes\n4. Dice onions and grate cheese\n5. Assemble tacos with beef and toppings\n6. Serve with sour cream and salsa",
-    image: "/beef-tacos.png",
+    image: "",
     tags: [],
     sourceLink: "",
   },
@@ -117,7 +117,7 @@ export const mockRecipes: Recipe[] = [
     ],
     instructions:
       "1. Cook rice according to package directions\n2. Heat curry paste in a pan\n3. Add coconut milk and bring to simmer\n4. Add chicken and cook until done\n5. Add vegetables and simmer until tender\n6. Garnish with thai basil and serve over rice",
-    image: "/thai-green-curry.png",
+    image: "",
     tags: [],
     sourceLink: "",
   },
@@ -141,7 +141,7 @@ export const mockRecipes: Recipe[] = [
     ],
     instructions:
       "1. Sauté mushrooms and set aside\n2. Cook onions until translucent\n3. Add rice and stir for 2 minutes\n4. Add wine and stir until absorbed\n5. Gradually add warm stock, stirring constantly\n6. Finish with mushrooms, parmesan, and butter",
-    image: "/mushroom-risotto.png",
+    image: "",
     tags: [],
     sourceLink: "",
   },

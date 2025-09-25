@@ -63,12 +63,16 @@ export default function HomeView({
   }) => (
     <Card className="min-w-[280px] cursor-pointer transition-shadow hover:shadow-md">
       <div className="relative">
-        <img
-          src={recipe.image || "/placeholder.svg?height=160&width=280"}
-          alt={recipe.name}
-          className="h-40 w-full rounded-t-lg object-cover"
-          onClick={() => onNavigate("recipe-detail", recipe)}
-        />
+        {recipe.image ? (
+          <img
+            src={recipe.image || "/placeholder.svg?height=160&width=280"}
+            alt={recipe.name}
+            className="h-40 w-full rounded-t-lg object-cover"
+            onClick={() => onNavigate("recipe-detail", recipe)}
+          />
+        ) : (
+          <div className="h-40 w-full rounded-t-lg bg-gray-200"></div>
+        )}
         <Badge className="absolute top-2 left-2" variant="secondary">
           {recipe.cuisine}
         </Badge>
