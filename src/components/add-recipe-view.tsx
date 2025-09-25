@@ -1,15 +1,22 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "~/components/ui/button"
-import { Input } from "~/components/ui/input"
-import { Label } from "~/components/ui/label"
-import { Textarea } from "~/components/ui/textarea"
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select"
-import { Badge } from "~/components/ui/badge"
-import { Checkbox } from "~/components/ui/checkbox"
-import { ArrowLeft, Upload, Link, X, Wand2 } from "lucide-react"
+import { useState } from "react";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { Textarea } from "~/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+import { Badge } from "~/components/ui/badge";
+import { Checkbox } from "~/components/ui/checkbox";
+import { ArrowLeft, Upload, Link, X, Wand2 } from "lucide-react";
+import { type NavigateTo, type Recipe } from "~/types";
 
 const cuisineOptions = [
   "Italian",
@@ -22,97 +29,129 @@ const cuisineOptions = [
   "American",
   "French",
   "Other",
-]
-const difficultyOptions = ["Easy", "Medium", "Hard"]
-const dietaryOptions = ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Keto", "Paleo", "Low-carb"]
+];
+const difficultyOptions = ["Easy", "Medium", "Hard"];
+const dietaryOptions = [
+  "Vegetarian",
+  "Vegan",
+  "Gluten-Free",
+  "Dairy-Free",
+  "Keto",
+  "Paleo",
+  "Low-carb",
+];
 
-export default function AddRecipeView({ onNavigate, onAddRecipe }) {
-  const [recipe, setRecipe] = useState({
+export default function AddRecipeView({
+  onNavigate,
+  onAddRecipe,
+}: {
+  onNavigate: NavigateTo;
+  onAddRecipe: (recipe: Recipe) => void;
+}) {
+  const [recipe, setRecipe] = useState<Recipe>({
+    id: 0,
     name: "",
     cuisine: "",
-    prepTime: "",
-    cookTime: "",
-    servings: "",
+    prepTime: 0,
+    cookTime: 0,
+    servings: 0,
     difficulty: "Easy",
     dietary: [],
-    ingredients: "",
+    ingredients: [],
     instructions: "",
-    sourceLink: "",
+    image: "",
     tags: [],
-  })
-  const [tagInput, setTagInput] = useState("")
-  const [showAutofill, setShowAutofill] = useState(false)
+    sourceLink: "",
+  });
+  const [tagInput, setTagInput] = useState("");
+  const [showAutofill, setShowAutofill] = useState(false);
 
-  const handleDietaryChange = (dietary, checked) => {
+  const handleDietaryChange = (dietary: string, checked: boolean) => {
     if (checked) {
-      setRecipe((prev) => ({ ...prev, dietary: [...prev.dietary, dietary] }))
+      setRecipe((prev) => ({ ...prev, dietary: [...prev.dietary, dietary] }));
     } else {
-      setRecipe((prev) => ({ ...prev, dietary: prev.dietary.filter((d) => d !== dietary) }))
+      setRecipe((prev) => ({
+        ...prev,
+        dietary: prev.dietary.filter((d) => d !== dietary),
+      }));
     }
-  }
+  };
 
   const addTag = () => {
     if (tagInput.trim() && !recipe.tags.includes(tagInput.trim())) {
-      setRecipe((prev) => ({ ...prev, tags: [...prev.tags, tagInput.trim()] }))
-      setTagInput("")
+      setRecipe((prev) => ({ ...prev, tags: [...prev.tags, tagInput.trim()] }));
+      setTagInput("");
     }
-  }
+  };
 
-  const removeTag = (tag) => {
-    setRecipe((prev) => ({ ...prev, tags: prev.tags.filter((t) => t !== tag) }))
-  }
+  const removeTag = (tag: string) => {
+    setRecipe((prev) => ({
+      ...prev,
+      tags: prev.tags.filter((t) => t !== tag),
+    }));
+  };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      e.preventDefault()
-      addTag()
+      e.preventDefault();
+      addTag();
     }
-  }
+  };
 
-  const handleSourceLinkChange = (value) => {
-    setRecipe((prev) => ({ ...prev, sourceLink: value }))
-    setShowAutofill(value.trim().length > 0)
-  }
+  const handleSourceLinkChange = (value: string) => {
+    setRecipe((prev) => ({ ...prev, sourceLink: value }));
+    setShowAutofill(value.trim().length > 0);
+  };
 
   const handleAutofill = () => {
     // Simulate autofill from URL
     setRecipe((prev) => ({
       ...prev,
       name: "Autofilled Recipe Name",
-      ingredients: "2 cups flour\n1 cup sugar\n3 eggs\n1 tsp vanilla",
-      instructions: "1. Mix dry ingredients\n2. Add wet ingredients\n3. Bake at 350°F for 25 minutes",
-    }))
-    setShowAutofill(false)
-  }
+      ingredients: ["2 cups flour", "1 cup sugar", "3 eggs", "1 tsp vanilla"],
+      instructions:
+        "1. Mix dry ingredients\n2. Add wet ingredients\n3. Bake at 350°F for 25 minutes",
+    }));
+    setShowAutofill(false);
+  };
 
   const handleSave = () => {
     if (recipe.name && recipe.ingredients && recipe.instructions) {
       const newRecipe = {
         ...recipe,
-        prepTime: Number.parseInt(recipe.prepTime) || 0,
-        cookTime: Number.parseInt(recipe.cookTime) || 0,
-        servings: Number.parseInt(recipe.servings) || 1,
-        ingredients: recipe.ingredients.split("\n").filter((ing) => ing.trim()),
+        prepTime: recipe.prepTime || 0,
+        cookTime: recipe.cookTime || 0,
+        servings: recipe.servings || 1,
+        ingredients: recipe.ingredients,
         image: "/custom-recipe.png",
-      }
-      onAddRecipe(newRecipe)
-      onNavigate("saved-recipes")
+      };
+      onAddRecipe(newRecipe);
+      onNavigate("saved-recipes");
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white border-b">
-        <div className="max-w-4xl mx-auto px-4 py-4">
+      <div className="border-b bg-white">
+        <div className="mx-auto max-w-4xl px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Button variant="ghost" size="sm" onClick={() => onNavigate("saved-recipes")}>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => onNavigate("saved-recipes")}
+              >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
               <h1 className="text-2xl font-bold">Add New Recipe</h1>
             </div>
-            <Button onClick={handleSave} disabled={!recipe.name || !recipe.ingredients || !recipe.instructions}>
+            <Button
+              onClick={handleSave}
+              disabled={
+                !recipe.name || !recipe.ingredients || !recipe.instructions
+              }
+            >
               Save Recipe
             </Button>
           </div>
@@ -120,8 +159,8 @@ export default function AddRecipeView({ onNavigate, onAddRecipe }) {
       </div>
 
       {/* Form */}
-      <div className="max-w-4xl mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="mx-auto max-w-4xl px-4 py-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {/* Left Column */}
           <div className="space-y-6">
             <Card>
@@ -134,7 +173,9 @@ export default function AddRecipeView({ onNavigate, onAddRecipe }) {
                   <Input
                     id="title"
                     value={recipe.name}
-                    onChange={(e) => setRecipe((prev) => ({ ...prev, name: e.target.value }))}
+                    onChange={(e) =>
+                      setRecipe((prev) => ({ ...prev, name: e.target.value }))
+                    }
                     placeholder="Enter recipe name"
                   />
                 </div>
@@ -144,7 +185,9 @@ export default function AddRecipeView({ onNavigate, onAddRecipe }) {
                     <Label htmlFor="cuisine">Cuisine</Label>
                     <Select
                       value={recipe.cuisine}
-                      onValueChange={(value) => setRecipe((prev) => ({ ...prev, cuisine: value }))}
+                      onValueChange={(value) =>
+                        setRecipe((prev) => ({ ...prev, cuisine: value }))
+                      }
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select cuisine" />
@@ -162,7 +205,9 @@ export default function AddRecipeView({ onNavigate, onAddRecipe }) {
                     <Label htmlFor="difficulty">Difficulty</Label>
                     <Select
                       value={recipe.difficulty}
-                      onValueChange={(value) => setRecipe((prev) => ({ ...prev, difficulty: value }))}
+                      onValueChange={(value) =>
+                        setRecipe((prev) => ({ ...prev, difficulty: value }))
+                      }
                     >
                       <SelectTrigger>
                         <SelectValue />
@@ -185,7 +230,12 @@ export default function AddRecipeView({ onNavigate, onAddRecipe }) {
                       id="prepTime"
                       type="number"
                       value={recipe.prepTime}
-                      onChange={(e) => setRecipe((prev) => ({ ...prev, prepTime: e.target.value }))}
+                      onChange={(e) =>
+                        setRecipe((prev) => ({
+                          ...prev,
+                          prepTime: Number(e.target.value),
+                        }))
+                      }
                       placeholder="15"
                     />
                   </div>
@@ -195,7 +245,12 @@ export default function AddRecipeView({ onNavigate, onAddRecipe }) {
                       id="cookTime"
                       type="number"
                       value={recipe.cookTime}
-                      onChange={(e) => setRecipe((prev) => ({ ...prev, cookTime: e.target.value }))}
+                      onChange={(e) =>
+                        setRecipe((prev) => ({
+                          ...prev,
+                          cookTime: Number(e.target.value),
+                        }))
+                      }
                       placeholder="30"
                     />
                   </div>
@@ -205,7 +260,12 @@ export default function AddRecipeView({ onNavigate, onAddRecipe }) {
                       id="servings"
                       type="number"
                       value={recipe.servings}
-                      onChange={(e) => setRecipe((prev) => ({ ...prev, servings: e.target.value }))}
+                      onChange={(e) =>
+                        setRecipe((prev) => ({
+                          ...prev,
+                          servings: Number(e.target.value),
+                        }))
+                      }
                       placeholder="4"
                     />
                   </div>
@@ -224,7 +284,9 @@ export default function AddRecipeView({ onNavigate, onAddRecipe }) {
                       <Checkbox
                         id={dietary}
                         checked={recipe.dietary.includes(dietary)}
-                        onCheckedChange={(checked) => handleDietaryChange(dietary, checked)}
+                        onCheckedChange={(checked: boolean) =>
+                          handleDietaryChange(dietary, checked)
+                        }
                       />
                       <Label htmlFor={dietary}>{dietary}</Label>
                     </div>
@@ -242,7 +304,7 @@ export default function AddRecipeView({ onNavigate, onAddRecipe }) {
                   <Label htmlFor="sourceLink">Source Link (optional)</Label>
                   <div className="flex gap-2">
                     <div className="relative flex-1">
-                      <Link className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      <Link className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
                       <Input
                         id="sourceLink"
                         value={recipe.sourceLink}
@@ -253,7 +315,7 @@ export default function AddRecipeView({ onNavigate, onAddRecipe }) {
                     </div>
                     {showAutofill && (
                       <Button variant="outline" onClick={handleAutofill}>
-                        <Wand2 className="h-4 w-4 mr-2" />
+                        <Wand2 className="mr-2 h-4 w-4" />
                         Autofill
                       </Button>
                     )}
@@ -262,7 +324,7 @@ export default function AddRecipeView({ onNavigate, onAddRecipe }) {
 
                 <div>
                   <Label htmlFor="tags">Tags (optional)</Label>
-                  <div className="flex gap-2 mb-2">
+                  <div className="mb-2 flex gap-2">
                     <Input
                       id="tags"
                       value={tagInput}
@@ -277,9 +339,16 @@ export default function AddRecipeView({ onNavigate, onAddRecipe }) {
                   {recipe.tags.length > 0 && (
                     <div className="flex flex-wrap gap-2">
                       {recipe.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary" className="flex items-center gap-1">
+                        <Badge
+                          key={tag}
+                          variant="secondary"
+                          className="flex items-center gap-1"
+                        >
                           {tag}
-                          <button onClick={() => removeTag(tag)} className="ml-1 hover:bg-gray-300 rounded-full p-0.5">
+                          <button
+                            onClick={() => removeTag(tag)}
+                            className="ml-1 rounded-full p-0.5 hover:bg-gray-300"
+                          >
                             <X className="h-3 w-3" />
                           </button>
                         </Badge>
@@ -290,9 +359,11 @@ export default function AddRecipeView({ onNavigate, onAddRecipe }) {
 
                 <div>
                   <Label htmlFor="image">Recipe Image</Label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                    <Upload className="h-8 w-8 mx-auto mb-2 text-gray-400" />
-                    <p className="text-sm text-gray-500">Click to upload or drag and drop</p>
+                  <div className="rounded-lg border-2 border-dashed border-gray-300 p-6 text-center">
+                    <Upload className="mx-auto mb-2 h-8 w-8 text-gray-400" />
+                    <p className="text-sm text-gray-500">
+                      Click to upload or drag and drop
+                    </p>
                     <p className="text-xs text-gray-400">PNG, JPG up to 10MB</p>
                   </div>
                 </div>
@@ -309,11 +380,20 @@ export default function AddRecipeView({ onNavigate, onAddRecipe }) {
               <CardContent>
                 <Textarea
                   value={recipe.ingredients}
-                  onChange={(e) => setRecipe((prev) => ({ ...prev, ingredients: e.target.value }))}
+                  onChange={(e) =>
+                    setRecipe((prev) => ({
+                      ...prev,
+                      ingredients: e.target.value
+                        .split("\n")
+                        .filter((n) => n.trim()),
+                    }))
+                  }
                   placeholder="Enter each ingredient on a new line:&#10;&#10;2 cups all-purpose flour&#10;1 tsp baking powder&#10;1/2 cup butter, softened&#10;1 cup sugar"
                   className="min-h-[200px]"
                 />
-                <p className="text-xs text-gray-500 mt-2">Enter each ingredient on a new line</p>
+                <p className="mt-2 text-xs text-gray-500">
+                  Enter each ingredient on a new line
+                </p>
               </CardContent>
             </Card>
 
@@ -324,16 +404,23 @@ export default function AddRecipeView({ onNavigate, onAddRecipe }) {
               <CardContent>
                 <Textarea
                   value={recipe.instructions}
-                  onChange={(e) => setRecipe((prev) => ({ ...prev, instructions: e.target.value }))}
+                  onChange={(e) =>
+                    setRecipe((prev) => ({
+                      ...prev,
+                      instructions: e.target.value,
+                    }))
+                  }
                   placeholder="Enter cooking instructions:&#10;&#10;1. Preheat oven to 350°F (175°C)&#10;2. In a large bowl, mix flour and baking powder&#10;3. In another bowl, cream butter and sugar&#10;4. Combine wet and dry ingredients&#10;5. Bake for 25-30 minutes"
                   className="min-h-[300px]"
                 />
-                <p className="text-xs text-gray-500 mt-2">Write step-by-step cooking instructions</p>
+                <p className="mt-2 text-xs text-gray-500">
+                  Write step-by-step cooking instructions
+                </p>
               </CardContent>
             </Card>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

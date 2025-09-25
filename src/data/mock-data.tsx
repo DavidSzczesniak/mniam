@@ -1,4 +1,6 @@
-export const mockRecipes = [
+import { type Recipe } from "~/types";
+
+export const mockRecipes: Recipe[] = [
   {
     id: 1,
     name: "Spaghetti Carbonara",
@@ -8,10 +10,19 @@ export const mockRecipes = [
     servings: 4,
     difficulty: "Medium",
     dietary: ["Vegetarian"],
-    ingredients: ["spaghetti", "eggs", "parmesan cheese", "pancetta", "black pepper", "garlic"],
+    ingredients: [
+      "spaghetti",
+      "eggs",
+      "parmesan cheese",
+      "pancetta",
+      "black pepper",
+      "garlic",
+    ],
     instructions:
       "1. Cook pasta according to package directions\n2. In a bowl, whisk eggs with grated parmesan\n3. Cook pancetta until crispy\n4. Combine hot pasta with egg mixture\n5. Add pancetta and season with black pepper\n6. Serve immediately",
     image: "/spaghetti-carbonara.png",
+    tags: [],
+    sourceLink: "",
   },
   {
     id: 2,
@@ -22,10 +33,19 @@ export const mockRecipes = [
     servings: 2,
     difficulty: "Easy",
     dietary: ["Gluten-Free"],
-    ingredients: ["chicken breast", "rice", "broccoli", "teriyaki sauce", "sesame seeds", "green onions"],
+    ingredients: [
+      "chicken breast",
+      "rice",
+      "broccoli",
+      "teriyaki sauce",
+      "sesame seeds",
+      "green onions",
+    ],
     instructions:
       "1. Cook rice according to package directions\n2. Season and cook chicken breast until done\n3. Steam broccoli until tender\n4. Slice chicken and arrange over rice\n5. Add broccoli and drizzle with teriyaki sauce\n6. Garnish with sesame seeds and green onions",
     image: "/chicken-teriyaki-bowl.png",
+    tags: [],
+    sourceLink: "",
   },
   {
     id: 3,
@@ -36,10 +56,21 @@ export const mockRecipes = [
     servings: 4,
     difficulty: "Easy",
     dietary: ["Vegan", "Gluten-Free"],
-    ingredients: ["quinoa", "cucumber", "tomatoes", "red onion", "olives", "feta cheese", "olive oil", "lemon"],
+    ingredients: [
+      "quinoa",
+      "cucumber",
+      "tomatoes",
+      "red onion",
+      "olives",
+      "feta cheese",
+      "olive oil",
+      "lemon",
+    ],
     instructions:
       "1. Cook quinoa and let cool\n2. Dice cucumber, tomatoes, and red onion\n3. Combine quinoa with vegetables and olives\n4. Crumble feta cheese on top\n5. Whisk olive oil and lemon juice for dressing\n6. Toss salad with dressing and serve",
     image: "/mediterranean-quinoa-salad.png",
+    tags: [],
+    sourceLink: "",
   },
   {
     id: 4,
@@ -50,10 +81,21 @@ export const mockRecipes = [
     servings: 4,
     difficulty: "Easy",
     dietary: [],
-    ingredients: ["ground beef", "taco shells", "lettuce", "tomatoes", "cheese", "onions", "sour cream", "salsa"],
+    ingredients: [
+      "ground beef",
+      "taco shells",
+      "lettuce",
+      "tomatoes",
+      "cheese",
+      "onions",
+      "sour cream",
+      "salsa",
+    ],
     instructions:
       "1. Brown ground beef with taco seasoning\n2. Warm taco shells in oven\n3. Shred lettuce and dice tomatoes\n4. Dice onions and grate cheese\n5. Assemble tacos with beef and toppings\n6. Serve with sour cream and salsa",
     image: "/beef-tacos.png",
+    tags: [],
+    sourceLink: "",
   },
   {
     id: 5,
@@ -64,10 +106,20 @@ export const mockRecipes = [
     servings: 4,
     difficulty: "Medium",
     dietary: ["Gluten-Free"],
-    ingredients: ["chicken", "coconut milk", "green curry paste", "thai basil", "eggplant", "bamboo shoots", "rice"],
+    ingredients: [
+      "chicken",
+      "coconut milk",
+      "green curry paste",
+      "thai basil",
+      "eggplant",
+      "bamboo shoots",
+      "rice",
+    ],
     instructions:
       "1. Cook rice according to package directions\n2. Heat curry paste in a pan\n3. Add coconut milk and bring to simmer\n4. Add chicken and cook until done\n5. Add vegetables and simmer until tender\n6. Garnish with thai basil and serve over rice",
     image: "/thai-green-curry.png",
+    tags: [],
+    sourceLink: "",
   },
   {
     id: 6,
@@ -78,9 +130,19 @@ export const mockRecipes = [
     servings: 4,
     difficulty: "Hard",
     dietary: ["Vegetarian"],
-    ingredients: ["arborio rice", "mushrooms", "onions", "white wine", "vegetable stock", "parmesan", "butter"],
+    ingredients: [
+      "arborio rice",
+      "mushrooms",
+      "onions",
+      "white wine",
+      "vegetable stock",
+      "parmesan",
+      "butter",
+    ],
     instructions:
       "1. Sauté mushrooms and set aside\n2. Cook onions until translucent\n3. Add rice and stir for 2 minutes\n4. Add wine and stir until absorbed\n5. Gradually add warm stock, stirring constantly\n6. Finish with mushrooms, parmesan, and butter",
     image: "/mushroom-risotto.png",
+    tags: [],
+    sourceLink: "",
   },
-]
+];

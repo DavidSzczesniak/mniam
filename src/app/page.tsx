@@ -11,21 +11,26 @@ import RecipeDetailView from "../components/recipe-detail-view";
 import GroceryListView from "../components/grocery-list-view";
 import SettingsView from "../components/settings-view";
 import { mockRecipes } from "../data/mock-data";
+import {
+  type UserPreferences,
+  type Recipe,
+  type NavigateTo,
+  type WeeklyPlan,
+} from "../types";
 
 export default function MealPlannerApp() {
   const [currentView, setCurrentView] = useState("signup");
-  const [user, setUser] = useState(null);
-  const [userPreferences, setUserPreferences] = useState({
+  const [userPreferences, setUserPreferences] = useState<UserPreferences>({
     mealTypes: [],
     dietaryRestrictions: [],
     excludedIngredients: [],
   });
-  const [recipes, setRecipes] = useState(mockRecipes);
-  const [savedRecipes, setSavedRecipes] = useState([]);
-  const [weeklyPlan, setWeeklyPlan] = useState({});
-  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [recipes, setRecipes] = useState<Recipe[]>(mockRecipes);
+  const [savedRecipes, setSavedRecipes] = useState<Recipe[]>([]);
+  const [weeklyPlan, setWeeklyPlan] = useState<WeeklyPlan>({});
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
 
-  const navigateTo = (view, data = null) => {
+  const navigateTo: NavigateTo = (view, data) => {
     setCurrentView(view);
     if (data) {
       if (view === "recipe-detail") {
@@ -34,21 +39,20 @@ export default function MealPlannerApp() {
     }
   };
 
-  const handleSignUp = (email, password) => {
-    setUser({ email });
+  const handleSignUp = () => {
     setCurrentView("welcome-preferences");
   };
 
-  const handlePreferencesComplete = (preferences) => {
+  const handlePreferencesComplete = (preferences: UserPreferences) => {
     setUserPreferences(preferences);
     setCurrentView("home");
   };
 
-  const addToSavedRecipes = (recipe) => {
+  const addToSavedRecipes = (recipe: Recipe) => {
     setSavedRecipes((prev) => [...prev, recipe]);
   };
 
-  const addToPlan = (day, recipe) => {
+  const addToPlan = (day: string, recipe: Recipe) => {
     setWeeklyPlan((prev) => ({
       ...prev,
       [day]: recipe,
@@ -58,7 +62,7 @@ export default function MealPlannerApp() {
   const renderCurrentView = () => {
     switch (currentView) {
       case "signup":
-        return <SignUpView onSignUp={handleSignUp} onNavigate={navigateTo} />;
+        return <SignUpView onSignUp={handleSignUp} />;
       case "welcome-preferences":
         return (
           <WelcomePreferencesView onComplete={handlePreferencesComplete} />
@@ -69,7 +73,6 @@ export default function MealPlannerApp() {
             recipes={recipes}
             userPreferences={userPreferences}
             onNavigate={navigateTo}
-            onAddToPlan={addToPlan}
             onSaveRecipe={addToSavedRecipes}
           />
         );
@@ -95,7 +98,7 @@ export default function MealPlannerApp() {
         return (
           <AddRecipeView
             onNavigate={navigateTo}
-            onAddRecipe={(recipe) => {
+            onAddRecipe={(recipe: Recipe) => {
               setRecipes((prev) => [
                 ...prev,
                 { ...recipe, id: prev.length + 1 },
@@ -108,13 +111,16 @@ export default function MealPlannerApp() {
           />
         );
       case "recipe-detail":
-        return (
+        return selectedRecipe ? (
           <RecipeDetailView
             recipe={selectedRecipe}
             onNavigate={navigateTo}
             onAddToPlan={addToPlan}
-            onSaveRecipe={addToSavedRecipes}
           />
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            No recipe selected
+          </div>
         );
       case "grocery-list":
         return (
@@ -126,10 +132,7 @@ export default function MealPlannerApp() {
             userPreferences={userPreferences}
             onNavigate={navigateTo}
             onUpdatePreferences={setUserPreferences}
-            onLogout={() => {
-              setUser(null);
-              setCurrentView("signup");
-            }}
+            onLogout={() => setCurrentView("signup")}
           />
         );
       default:
@@ -138,6 +141,7 @@ export default function MealPlannerApp() {
             recipes={recipes}
             userPreferences={userPreferences}
             onNavigate={navigateTo}
+            onSaveRecipe={addToSavedRecipes}
           />
         );
     }

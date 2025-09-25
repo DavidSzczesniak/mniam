@@ -7,15 +7,13 @@ import { Label } from "~/components/ui/label";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { ChefHat } from "lucide-react";
 
-export default function SignUpView({ onSignUp, onNavigate }) {
+export default function SignUpView({ onSignUp }: { onSignUp: () => void }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // if (email && password) {
-    onSignUp(email, password);
-    // }
+    onSignUp();
   };
 
   return (

@@ -1,86 +1,91 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "~/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card"
-import { Checkbox } from "~/components/ui/checkbox"
-import { Input } from "~/components/ui/input"
-import { Label } from "~/components/ui/label"
-import { Badge } from "~/components/ui/badge"
-import { ChefHat, X } from "lucide-react"
+import { useState } from "react";
+import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { Checkbox } from "~/components/ui/checkbox";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { Badge } from "~/components/ui/badge";
+import { ChefHat, X } from "lucide-react";
+import { type UserPreferences } from "~/types";
+import { mealTypeOptions, dietaryRestrictionOptions } from "~/data/preferences";
 
-const mealTypeOptions = ["Vegetarian", "Meat-based", "Pescatarian", "Flexitarian", "Plant-based"]
+export default function WelcomePreferencesView({
+  onComplete,
+}: {
+  onComplete: (preferences: UserPreferences) => void;
+}) {
+  const [mealTypes, setMealTypes] = useState<string[]>([]);
+  const [dietaryRestrictions, setDietaryRestrictions] = useState<string[]>([]);
+  const [excludedIngredients, setExcludedIngredients] = useState<string[]>([]);
+  const [ingredientInput, setIngredientInput] = useState("");
 
-const dietaryRestrictionOptions = [
-  "Gluten-free",
-  "Vegan",
-  "Dairy-free",
-  "Nut-free",
-  "Keto",
-  "Paleo",
-  "Low-carb",
-  "Mediterranean",
-]
-
-export default function WelcomePreferencesView({ onComplete }) {
-  const [mealTypes, setMealTypes] = useState([])
-  const [dietaryRestrictions, setDietaryRestrictions] = useState([])
-  const [excludedIngredients, setExcludedIngredients] = useState([])
-  const [ingredientInput, setIngredientInput] = useState("")
-
-  const handleMealTypeChange = (mealType, checked) => {
+  const handleMealTypeChange = (mealType: string, checked: boolean) => {
     if (checked) {
-      setMealTypes([...mealTypes, mealType])
+      setMealTypes([...mealTypes, mealType]);
     } else {
-      setMealTypes(mealTypes.filter((type) => type !== mealType))
+      setMealTypes(mealTypes.filter((type) => type !== mealType));
     }
-  }
+  };
 
-  const handleDietaryRestrictionChange = (restriction, checked) => {
+  const handleDietaryRestrictionChange = (
+    restriction: string,
+    checked: boolean,
+  ) => {
     if (checked) {
-      setDietaryRestrictions([...dietaryRestrictions, restriction])
+      setDietaryRestrictions([...dietaryRestrictions, restriction]);
     } else {
-      setDietaryRestrictions(dietaryRestrictions.filter((r) => r !== restriction))
+      setDietaryRestrictions(
+        dietaryRestrictions.filter((r) => r !== restriction),
+      );
     }
-  }
+  };
 
   const addExcludedIngredient = () => {
-    if (ingredientInput.trim() && !excludedIngredients.includes(ingredientInput.trim())) {
-      setExcludedIngredients([...excludedIngredients, ingredientInput.trim()])
-      setIngredientInput("")
+    if (
+      ingredientInput.trim() &&
+      !excludedIngredients.includes(ingredientInput.trim())
+    ) {
+      setExcludedIngredients([...excludedIngredients, ingredientInput.trim()]);
+      setIngredientInput("");
     }
-  }
+  };
 
-  const removeExcludedIngredient = (ingredient) => {
-    setExcludedIngredients(excludedIngredients.filter((i) => i !== ingredient))
-  }
+  const removeExcludedIngredient = (ingredient: string) => {
+    setExcludedIngredients(excludedIngredients.filter((i) => i !== ingredient));
+  };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      e.preventDefault()
-      addExcludedIngredient()
+      e.preventDefault();
+      addExcludedIngredient();
     }
-  }
+  };
 
   const handleContinue = () => {
     onComplete({
       mealTypes,
       dietaryRestrictions,
       excludedIngredients,
-    })
-  }
+    });
+  };
 
   return (
     <div className="min-h-screen p-4">
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="bg-green-100 p-3 rounded-full">
+      <div className="mx-auto max-w-2xl">
+        <div className="mb-8 text-center">
+          <div className="mb-4 flex justify-center">
+            <div className="rounded-full bg-green-100 p-3">
               <ChefHat className="h-8 w-8 text-green-600" />
             </div>
           </div>
-          <h1 className="text-2xl font-bold mb-2">Let's get to know your food preferences</h1>
-          <p className="text-gray-600">This helps us recommend the perfect recipes for you</p>
+          <h1 className="mb-2 text-2xl font-bold">
+            Let&apos;s get to know your food preferences
+          </h1>
+          <p className="text-gray-600">
+            This helps us recommend the perfect recipes for you
+          </p>
         </div>
 
         <div className="space-y-6">
@@ -95,7 +100,9 @@ export default function WelcomePreferencesView({ onComplete }) {
                     <Checkbox
                       id={mealType}
                       checked={mealTypes.includes(mealType)}
-                      onCheckedChange={(checked) => handleMealTypeChange(mealType, checked)}
+                      onCheckedChange={(checked: boolean) =>
+                        handleMealTypeChange(mealType, checked)
+                      }
                     />
                     <Label htmlFor={mealType}>{mealType}</Label>
                   </div>
@@ -111,11 +118,16 @@ export default function WelcomePreferencesView({ onComplete }) {
             <CardContent>
               <div className="grid grid-cols-2 gap-3">
                 {dietaryRestrictionOptions.map((restriction) => (
-                  <div key={restriction} className="flex items-center space-x-2">
+                  <div
+                    key={restriction}
+                    className="flex items-center space-x-2"
+                  >
                     <Checkbox
                       id={restriction}
                       checked={dietaryRestrictions.includes(restriction)}
-                      onCheckedChange={(checked) => handleDietaryRestrictionChange(restriction, checked)}
+                      onCheckedChange={(checked: boolean) =>
+                        handleDietaryRestrictionChange(restriction, checked)
+                      }
                     />
                     <Label htmlFor={restriction}>{restriction}</Label>
                   </div>
@@ -143,11 +155,15 @@ export default function WelcomePreferencesView({ onComplete }) {
               {excludedIngredients.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {excludedIngredients.map((ingredient) => (
-                    <Badge key={ingredient} variant="secondary" className="flex items-center gap-1">
+                    <Badge
+                      key={ingredient}
+                      variant="secondary"
+                      className="flex items-center gap-1"
+                    >
                       {ingredient}
                       <button
                         onClick={() => removeExcludedIngredient(ingredient)}
-                        className="ml-1 hover:bg-gray-300 rounded-full p-0.5"
+                        className="ml-1 rounded-full p-0.5 hover:bg-gray-300"
                       >
                         <X className="h-3 w-3" />
                       </button>
@@ -166,5 +182,5 @@ export default function WelcomePreferencesView({ onComplete }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
